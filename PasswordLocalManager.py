@@ -24,8 +24,9 @@ class MasterWindow(tk.Tk):
 
 
 
-def AESEncryption(data):
-    key = input('Introduce password: ')
+def AESEncryption(data, key = ''):
+    if key == '':
+        key = input('Introduce password: ')
     key = key.encode('UTF-8')
     #Here ask for password by gui
     header = b"header"
@@ -40,9 +41,10 @@ def AESEncryption(data):
     result = json.dumps(dict(zip(json_k, json_v)))
     return result
 
-def AESDecryption(json_input):
+def AESDecryption(json_input, key = ''):
     try:
-        key = input('Introduce password: ')
+        if key == '':
+            key = input('Introduce password: ')
         key = key.encode('UTF-8')
         b64 = json.loads(json_input)
         json_k = [ 'nonce', 'header', 'ciphertext', 'tag' ]
@@ -61,36 +63,74 @@ if __name__ == '__main__':
     # Win = MasterWindow()
     # Win.mainloop()
 
-    opt = int(input("1 - Decrypt\n2 - Encrypt\n3 - Remove Password File\n"
-                    "0 - Exit\n"))
+    while True:
 
-    if opt == 1:
-        with open(r'C:\Users\Jon\github\PasswordLocalManager\encrypted.json',
-                  'r') as f:
-            result = f.read()
+        opt = int(input("1 - Decrypt&Encrypt\n2 - Decrypt\n3 - Encrypt\n"
+                        "4 - Remove Password File\n0 - Exit\n"))
 
-        plaintext = AESDecryption(result)
+        if opt == 1:
+            passwd = r'C:\Users\Jon\github\PasswordLocalManager\passwd.txt'
+            encryp = r'C:\Users\Jon\github\PasswordLocalManager\encrypted.json'
+            with open(encryp, 'r') as f:
+                result = f.read()
+            key = input('Introduce password: ')
+            plaintext = AESDecryption(result, key)
 
-        with open(r'C:\Users\Jon\github\PasswordLocalManager\passwd.txt',
-                  'wb') as f:
-             f.write(plaintext)
-        print("File Decrypted")
+            with open(passwd, 'wb') as f:
+                 f.write(plaintext)
+            print("File Decrypted")
 
-    elif opt == 2:
-        with open(r'C:\Users\Jon\github\PasswordLocalManager\passwd.txt',
-                  'r') as f:
-            text = f.read()
+            osCommandString = "notepad.exe " + passwd
 
-        result = AESEncryption(text)
+            os.system(osCommandString)
 
-        with open(r'C:\Users\Jon\github\PasswordLocalManager\encrypted.json',
-                  'w') as f:
-            f.write(result)
-        print("File Encrypted")
+            with open(passwd, 'r') as f:
+                text = f.read()
 
-    elif opt == 3:
-        os.remove(r'C:\Users\Jon\github\PasswordLocalManager\passwd.txt')
-        print("File passwd.txt removed")
+            result = AESEncryption(text, key)
 
-    else:
-        print("Saliendo...")
+            with open(encryp, 'w') as f:
+                f.write(result)
+            print("File Encrypted")
+
+            os.remove(passwd)
+            print("File passwd.txt removed")
+
+            exit()
+
+        elif opt == 2:
+            with open(r'C:\Users\Jon\github\PasswordLocalManager\encrypted.json'
+                      ,'r') as f:
+                result = f.read()
+
+            plaintext = AESDecryption(result)
+
+            with open(r'C:\Users\Jon\github\PasswordLocalManager\passwd.txt',
+                      'wb') as f:
+                 f.write(plaintext)
+            print("File Decrypted")
+
+            osCommandString = "notepad.exe passwd.txt"
+            os.system(osCommandString)
+
+
+
+        elif opt == 3:
+            with open(r'C:\Users\Jon\github\PasswordLocalManager\passwd.txt',
+                      'r') as f:
+                text = f.read()
+
+            result = AESEncryption(text)
+
+            with open(r'C:\Users\Jon\github\PasswordLocalManager\encrypted.json'
+                      ,'w') as f:
+                f.write(result)
+            print("File Encrypted")
+
+        elif opt == 4:
+            os.remove(r'C:\Users\Jon\github\PasswordLocalManager\passwd.txt')
+            print("File passwd.txt removed")
+
+        else:
+            print("Saliendo...")
+            exit()
