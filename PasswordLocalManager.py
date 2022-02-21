@@ -4,6 +4,7 @@ import constants as c
 from Crypto.Cipher import AES
 from base64 import b64encode, b64decode
 import json
+import os
 
 class MasterWindow(tk.Tk):
     def __init__(self,master=None):
@@ -60,17 +61,36 @@ if __name__ == '__main__':
     # Win = MasterWindow()
     # Win.mainloop()
 
-    # EncodePasswdFile
-    # with open(r'C:\Users\Jon\Desktop\passwd.txt','r') as f:
-    #     text = f.read()
-    #
-    # result = AESEncryption(text)
-    # print(result)
+    opt = int(input("1 - Decrypt\n2 - Encrypt\n3 - Remove Password File\n"
+                    "0 - Exit\n"))
 
-    with open(r'C:\Users\Jon\github\PasswordLocalManager\encrypted.json','r') as f:
-        result = f.read()
+    if opt == 1:
+        with open(r'C:\Users\Jon\github\PasswordLocalManager\encrypted.json',
+                  'r') as f:
+            result = f.read()
 
-    plaintext = AESDecryption(result)
+        plaintext = AESDecryption(result)
 
-    with open(r'C:\Users\Jon\Desktop\passwd.txt','wb') as f:
-         f.write(plaintext)
+        with open(r'C:\Users\Jon\github\PasswordLocalManager\passwd.txt',
+                  'wb') as f:
+             f.write(plaintext)
+        print("File Decrypted")
+
+    elif opt == 2:
+        with open(r'C:\Users\Jon\github\PasswordLocalManager\passwd.txt',
+                  'r') as f:
+            text = f.read()
+
+        result = AESEncryption(text)
+
+        with open(r'C:\Users\Jon\github\PasswordLocalManager\encrypted.json',
+                  'w') as f:
+            f.write(result)
+        print("File Encrypted")
+
+    elif opt == 3:
+        os.remove(r'C:\Users\Jon\github\PasswordLocalManager\passwd.txt')
+        print("File passwd.txt removed")
+
+    else:
+        print("Saliendo...")
