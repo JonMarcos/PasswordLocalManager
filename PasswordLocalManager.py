@@ -3,8 +3,10 @@ from PIL import ImageTk, Image
 import constants as c
 from Crypto.Cipher import AES
 from base64 import b64encode, b64decode
+from getpass import getpass
 import json
 import os
+import sys
 
 class MasterWindow(tk.Tk):
     def __init__(self,master=None):
@@ -73,7 +75,13 @@ if __name__ == '__main__':
             encryp = r'C:\Users\Jon\github\PasswordLocalManager\encrypted.json'
             with open(encryp, 'r') as f:
                 result = f.read()
-            key = input('Introduce password: ')
+
+            while True:
+                key = getpass(prompt='Password:')
+                confirm_key = getpass(prompt='Confirm Password:')
+                if key == confirm_key:
+                    break
+                print("Different Password!")
             plaintext = AESDecryption(result, key)
 
             with open(passwd, 'wb') as f:

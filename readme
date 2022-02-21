@@ -1,0 +1,2 @@
+#getpass function needs winpty to print in console
+    winpty python PasswordLocalManager.py
