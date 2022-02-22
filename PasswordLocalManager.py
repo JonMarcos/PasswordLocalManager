@@ -8,6 +8,10 @@ import json
 import os
 import sys
 
+"""
+Before running the program make sure you have properly configured config.json
+"""
+
 class MasterWindow(tk.Tk):
     def __init__(self,master=None):
         tk.Tk.__init__(self,master)
@@ -140,7 +144,7 @@ if __name__ == '__main__':
                  f.write(plaintext)
             print("File Decrypted")
 
-            osCommandString = "notepad.exe " + passwd_file
+            osCommandString = notepad_program + " " + passwd_file
             os.system(osCommandString)
 
         elif opt == 3:
@@ -158,7 +162,7 @@ if __name__ == '__main__':
             print("File passwd.txt removed")
 
         elif opt == 5:
-            osCommandString = "notepad.exe " + config_file
+            osCommandString = notepad_program + " " + config_file
             os.system(osCommandString)
 
         else:
