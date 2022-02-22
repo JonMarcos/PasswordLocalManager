@@ -7,6 +7,9 @@ foo@bar:~$ winpty python PasswordLocalManager.py
 ```
    
 # Linux
+```console
+foo@bar:~$ python PasswordLocalManager.py
+```
 
 # Capture The Flag
 El fichero encrypted_flag.json contiene una flag encriptada con una contraseña.
