@@ -65,7 +65,7 @@ if __name__ == '__main__':
     # Win = MasterWindow()
     # Win.mainloop()
 
-    with open(r'C:\Users\Jon\github\PasswordLocalManager\config.json',
+    with open("config.json",
               'r') as f:
         json_input = f.read()
     config_file_json = b64 = json.loads(json_input)
