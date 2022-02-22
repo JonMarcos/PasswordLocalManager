@@ -73,6 +73,7 @@ if __name__ == '__main__':
     encrypted_file = config_file_json['ENCRYPTED_FILE']
     passwd_file = config_file_json['PASSWD_FILE']
     config_file = config_file_json['CONFIG_FILE']
+    notepad_program = config_file_json['NOTEPAD_PROGRAM']
 
     print(" ___                              _   _                 _ \n"
           "| _ \__ _ _______ __ _____ _ _ __| | | |   ___  __ __ _| |\n"
@@ -112,7 +113,7 @@ if __name__ == '__main__':
                  f.write(plaintext)
             print("File Decrypted")
 
-            osCommandString = "notepad.exe " + passwd_file
+            osCommandString = notepad_program + " " + passwd_file
             os.system(osCommandString)
 
             with open(passwd_file, 'r') as f:
