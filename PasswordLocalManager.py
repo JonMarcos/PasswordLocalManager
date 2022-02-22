@@ -65,15 +65,22 @@ if __name__ == '__main__':
     # Win = MasterWindow()
     # Win.mainloop()
 
-    while True:
+    with open(r'C:\Users\Jon\github\PasswordLocalManager\config.json',
+              'r') as f:
+        json_input = f.read()
+    config_file_json = b64 = json.loads(json_input)
 
+    encrypted_file = config_file_json['ENCRYPTED_FILE']
+    passwd_file = config_file_json['PASSWD_FILE']
+    config_file = config_file_json['CONFIG_FILE']
+
+    while True:
         opt = int(input("1 - Decrypt&Encrypt\n2 - Decrypt\n3 - Encrypt\n"
-                        "4 - Remove Password File\n0 - Exit\n"))
+                        "4 - Remove Password File\n5 - Configuration\n"
+                        "0 - Exit\n"))
 
         if opt == 1:
-            passwd = r'C:\Users\Jon\github\PasswordLocalManager\passwd.txt'
-            encryp = r'C:\Users\Jon\github\PasswordLocalManager\encrypted.json'
-            with open(encryp, 'r') as f:
+            with open(encrypted_file, 'r') as f:
                 result = f.read()
 
             while True:
@@ -84,60 +91,57 @@ if __name__ == '__main__':
                 print("Different Password!")
             plaintext = AESDecryption(result, key)
 
-            with open(passwd, 'wb') as f:
+            with open(passwd_file, 'wb') as f:
                  f.write(plaintext)
             print("File Decrypted")
 
-            osCommandString = "notepad.exe " + passwd
-
+            osCommandString = "notepad.exe " + passwd_file
             os.system(osCommandString)
 
-            with open(passwd, 'r') as f:
+            with open(passwd_file, 'r') as f:
                 text = f.read()
 
             result = AESEncryption(text, key)
 
-            with open(encryp, 'w') as f:
+            with open(encrypted_file, 'w') as f:
                 f.write(result)
             print("File Encrypted")
 
-            os.remove(passwd)
+            os.remove(passwd_file)
             print("File passwd.txt removed")
 
             exit()
 
         elif opt == 2:
-            with open(r'C:\Users\Jon\github\PasswordLocalManager\encrypted.json'
-                      ,'r') as f:
+            with open(encrypted_file, 'r') as f:
                 result = f.read()
 
             plaintext = AESDecryption(result)
 
-            with open(r'C:\Users\Jon\github\PasswordLocalManager\passwd.txt',
-                      'wb') as f:
+            with open(passwd_file, 'wb') as f:
                  f.write(plaintext)
             print("File Decrypted")
 
-            osCommandString = "notepad.exe passwd.txt"
+            osCommandString = "notepad.exe " + passwd_file
             os.system(osCommandString)
 
-
-
         elif opt == 3:
-            with open(r'C:\Users\Jon\github\PasswordLocalManager\passwd.txt',
-                      'r') as f:
+            with open(passwd_file, 'r') as f:
                 text = f.read()
 
             result = AESEncryption(text)
 
-            with open(r'C:\Users\Jon\github\PasswordLocalManager\encrypted.json'
-                      ,'w') as f:
+            with open(encrypted_file, 'w') as f:
                 f.write(result)
             print("File Encrypted")
 
         elif opt == 4:
-            os.remove(r'C:\Users\Jon\github\PasswordLocalManager\passwd.txt')
+            os.remove(passwd_file)
             print("File passwd.txt removed")
+
+        elif opt == 5:
+            osCommandString = "notepad.exe " + config_file
+            os.system(osCommandString)
 
         else:
             print("Saliendo...")
