@@ -68,9 +68,8 @@ def AESDecryption(json_input, key = ''):
 if __name__ == '__main__':
     # Win = MasterWindow()
     # Win.mainloop()
-
-    with open("config.json",
-              'r') as f:
+    TEST_FILENAME = os.path.join(os.path.dirname(__file__), 'config.json')
+    with open(TEST_FILENAME, 'r') as f:
         json_input = f.read()
     config_file_json = b64 = json.loads(json_input)
 
