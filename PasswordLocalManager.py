@@ -68,8 +68,8 @@ def AESDecryption(json_input, key = ''):
 if __name__ == '__main__':
     # Win = MasterWindow()
     # Win.mainloop()
-    TEST_FILENAME = os.path.join(os.path.dirname(__file__), 'config.json')
-    with open(TEST_FILENAME, 'r') as f:
+    CONFIG_FILENAME = os.path.join(os.path.dirname(__file__), 'config.json')
+    with open(CONFIG_FILENAME, 'r') as f:
         json_input = f.read()
     config_file_json = b64 = json.loads(json_input)
 
@@ -98,19 +98,20 @@ if __name__ == '__main__':
             try:
                 with open(encrypted_file, 'r') as f:
                     result = f.read()
-                while True:
-                    key = getpass(prompt='Password:')
-                    confirm_key = getpass(prompt='Confirm Password:')
-                    if key == confirm_key:
-                        break
-                    print("Different Password!")
+
+                key = getpass(prompt='Password:')
 
                 plaintext = AESDecryption(result, key)
             except FileNotFoundError:
                 with open(encrypted_file, 'w') as f:
                     pass
                 plaintext = b"# NEW PASSWORD FILE"
-                key = ''
+                while True:
+                    key = getpass(prompt='Password:')
+                    confirm_key = getpass(prompt='Confirm Password:')
+                    if key == confirm_key:
+                        break
+                    print("Different Password!")
 
             with open(passwd_file, 'wb') as f:
                  f.write(plaintext)
@@ -129,41 +130,49 @@ if __name__ == '__main__':
             print("File Encrypted")
 
             os.remove(passwd_file)
-            print("File passwd.txt removed")
-
-            exit()
+            print("File passwd.txt removed\n")
 
         elif opt == 2:
-            with open(encrypted_file, 'r') as f:
+            opt2_encrypted_file = input("Type the encrypted file path: ")
+            with open(opt2_encrypted_file, 'r') as f:
                 result = f.read()
 
             plaintext = AESDecryption(result)
 
-            with open(passwd_file, 'wb') as f:
+            opt2_passwd_file = input("Type the target password file path: ")
+            with open(opt2_passwd_file, 'wb') as f:
                  f.write(plaintext)
             print("File Decrypted")
 
-            osCommandString = notepad_program + " " + passwd_file
+            osCommandString = notepad_program + " " + opt2_passwd_file
             os.system(osCommandString)
 
         elif opt == 3:
-            with open(passwd_file, 'r') as f:
-                text = f.read()
-
+            opt3_passwd_file = input("Type the password file path: ")
+            try:
+                with open(opt3_passwd_file, 'r') as f:
+                    text = f.read()
+            except FileNotFoundError:
+                osCommandString = notepad_program + " " + opt3_passwd_file
+                os.system(osCommandString)
+                with open(opt3_passwd_file, 'r') as f:
+                    text = f.read()
             result = AESEncryption(text)
 
-            with open(encrypted_file, 'w') as f:
+            opt3_encrypted_file = input("Type the target encrypted file path: ")
+            with open(opt3_encrypted_file, 'w') as f:
                 f.write(result)
             print("File Encrypted")
 
         elif opt == 4:
-            os.remove(passwd_file)
+            opt4_passwd_file = input("Type the path of the file to remove: ")
+            os.remove(opt4_passwd_file)
             print("File passwd.txt removed")
 
         elif opt == 5:
-            osCommandString = notepad_program + " " + config_file
+            osCommandString = notepad_program + " " + CONFIG_FILENAME
             os.system(osCommandString)
 
         else:
-            print("Saliendo...")
+            print("Saliendo...\n")
             exit()
