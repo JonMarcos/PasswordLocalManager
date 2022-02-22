@@ -1,2 +1,5 @@
 #getpass function needs winpty to print in console
     winpty python PasswordLocalManager.py
+
+
+#Create your Password.txt file and locate it wherever you prefer, but modify the config.json file
