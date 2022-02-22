@@ -74,6 +74,17 @@ if __name__ == '__main__':
     passwd_file = config_file_json['PASSWD_FILE']
     config_file = config_file_json['CONFIG_FILE']
 
+    print(" ___                              _   _                 _ \n"
+          "| _ \__ _ _______ __ _____ _ _ __| | | |   ___  __ __ _| |\n"
+          "|  _/ _` (_-<_-< V  V / _ \ '_/ _` | | |__/ _ \/ _/ _` | |\n"
+          "|_| \__,_/__/__/\_/\_/\___/_| \__,_| |____\___/\__\__,_|_|\n"
+          "	       __  __                                            \n"
+          "	      |  \/  |__ _ _ _  __ _ __ _ ___ _ _                \n"
+          "	      | |\/| / _` | ' \/ _` / _` / -_) '_|               \n"
+          "	      |_|  |_\__,_|_||_\__,_\__, \___|_|                 \n"
+          "	                            |___/                        \n"
+          "                                                by l4thras\n")
+
     while True:
         opt = int(input("1 - Decrypt&Encrypt\n2 - Decrypt\n3 - Encrypt\n"
                         "4 - Remove Password File\n5 - Configuration\n"
