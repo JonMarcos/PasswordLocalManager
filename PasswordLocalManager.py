@@ -80,16 +80,22 @@ if __name__ == '__main__':
                         "0 - Exit\n"))
 
         if opt == 1:
-            with open(encrypted_file, 'r') as f:
-                result = f.read()
+            try:
+                with open(encrypted_file, 'r') as f:
+                    result = f.read()
+                while True:
+                    key = getpass(prompt='Password:')
+                    confirm_key = getpass(prompt='Confirm Password:')
+                    if key == confirm_key:
+                        break
+                    print("Different Password!")
 
-            while True:
-                key = getpass(prompt='Password:')
-                confirm_key = getpass(prompt='Confirm Password:')
-                if key == confirm_key:
-                    break
-                print("Different Password!")
-            plaintext = AESDecryption(result, key)
+                plaintext = AESDecryption(result, key)
+            except FileNotFoundError:
+                with open(encrypted_file, 'w') as f:
+                    pass
+                plaintext = b"# NEW PASSWORD FILE"
+                key = ''
 
             with open(passwd_file, 'wb') as f:
                  f.write(plaintext)
